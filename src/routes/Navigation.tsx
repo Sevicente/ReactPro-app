@@ -1,41 +1,54 @@
-import { BrowserRouter, NavLink } from "react-router-dom";
-import {Routes, Route, Link, Navigate} from 'react-router-dom';
-import logo from '../logo.svg'
-import { LazyPage1, LazyPage2, LazyPage3 } from "../01-lazyload/pages";
+import { Suspense } from 'react';
 
+import { BrowserRouter as Router, Route, Switch, NavLink, Redirect } from 'react-router-dom';
+
+import logo from '../logo.svg';
+import { routes } from './routes';
 
 export const Navigation = () => {
-  return (
-    //Envuelve toda la aplicación y proporciona el contexto de enrutamiento
-     <BrowserRouter> 
-        <div className="main-layout">
+    return (
+      <Suspense fallback={ <span>Loading...</span> }>
+        <Router>
+          <div className="main-layout">
             <nav>
-                <img src={logo} alt=""></img>
-                <ul>
-                    <li>
-                         {/* Enlaces de navegación que cambian de estilo cuando están activos */}
-                        <NavLink to="/lazy1" className={({isActive}) => isActive ? 'nav-active' : ''}>Lazy 1</NavLink>
+                <img src={ logo } alt="React Logo" />
+              <ul>
+              
+                {
+                  routes.map( ({ path, name }) => (
+                    <li key={ path }>
+                      <NavLink 
+                        to={ path }
+                        activeClassName="nav-active"
+                        exact>
+                          { name }
+                        </NavLink>
                     </li>
-
-                    <li>
-                        <NavLink to="/lazy2" className={({isActive}) => isActive ? 'nav-active' : ''}>Lazy 2</NavLink>
-                    </li>
-
-                    <li>
-                        <NavLink to="/lazy3" className={({isActive}) => isActive ? 'nav-active' : ''}>Lazy 3</NavLink>
-                    </li>
-                </ul>
+                  ))
+                }
+              </ul>
             </nav>
-        
-            {/* Definimos las rutas de la aplicación */}
-            <Routes>
-                <Route path="lazy1" element={<LazyPage1/>}/>
-                <Route path="lazy2" element={<LazyPage2/>}/>  
-                <Route path="lazy3" element={<LazyPage3/>}/>  
+  
+            {/* A <Switch> looks through its children <Route>s and
+                renders the first one that matches the current URL. */}
+            <Switch>
+                
+                {
+                  routes.map( ({ path, component:Component }) => (
+                    <Route 
+                      key={ path }
+                      path={ path }
+                      render={ () => <Component /> }
+                    />
+                  ))
+                }
+  
+                <Redirect to={ routes[0].path } />
             
-                <Route path="/*" element={<Navigate to="/lazy1" replace />}/>
-            </Routes>
-        </div>
-    </BrowserRouter>
-  )
-}
+            </Switch>
+          </div>
+        </Router>
+  
+      </Suspense>
+    );
+  }
