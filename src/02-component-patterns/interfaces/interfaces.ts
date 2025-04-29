@@ -1,4 +1,8 @@
 import { JSX, ReactElement } from "react";
+import { Props as ProdCardProps } from "../components/ProductCard";
+import { Props as ProductTitleProps } from '../components/ProductTitle';
+import { Props as ProductButtonsProps } from "../components/ProductButtons";
+import { Props as ProductImageProps } from "../components/ProductImage";
 
 
 export interface ProductCardProps {
@@ -21,8 +25,8 @@ export interface ProductContextProps{//Propiedades para el provider del contexto
 }
 
 export interface ProductCardHOCProps {
-    ({ children, product }: ProductCardProps ):JSX.Element,
-    Title: ({ title }: { title?: string }) => JSX.Element,
-    Image: ({ img }: { img?: string }) => JSX.Element,
-    Buttons: () => JSX.Element
+    ({ children, product }: ProdCardProps ):JSX.Element,
+    Title: (Props: ProductTitleProps) => JSX.Element,
+    Image: (Props:ProductImageProps) => JSX.Element,
+    Buttons: (Props:ProductButtonsProps) => JSX.Element
 }
