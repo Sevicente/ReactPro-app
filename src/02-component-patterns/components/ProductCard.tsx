@@ -2,7 +2,7 @@
 import styles from '../styles/styles.module.css'
 import { useProduct } from '../hooks/useProduct';
 import { createContext, CSSProperties, ReactElement } from 'react';
-import { Product, ProductContextProps } from '../interfaces/interfaces';
+import { onChangeArg, Product, ProductContextProps } from '../interfaces/interfaces';
 
 
 
@@ -16,13 +16,15 @@ export interface Props {
     children?:ReactElement | ReactElement[]; //Establecer que el componente ProductCard pueda tener componenetes hijo 
     className?: string;
     style?: CSSProperties;
+    onChange?: (args: onChangeArg) => void;
+    value?: number
 }
 
 //Definimos un componente funcional ProductCard que recibe product como una prop.
 //Obligamos al componente que simepre le tiene que enviar un producto 
-export const ProductCard = ({children, product, className, style}:Props) => { 
+export const ProductCard = ({children, product, className, style, value, onChange}:Props) => { 
 
- const {counter, increaseBy} = useProduct();//Hook con la lógica de useState para incrementar y decrementar
+ const {counter, increaseBy} = useProduct({ onChange, product, value});//Hook con la lógica de useState para incrementar y decrementar
 
 
   return (

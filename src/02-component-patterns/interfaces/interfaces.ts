@@ -30,3 +30,12 @@ export interface ProductCardHOCProps {
     Image: (Props:ProductImageProps) => JSX.Element,
     Buttons: (Props:ProductButtonsProps) => JSX.Element
 }
+
+export interface onChangeArg{
+    product: Product, 
+    count: number
+}
+
+export interface ProductInCart extends Product{//extender la interfaz de Product y añadirle un contador
+    count: number
+}
